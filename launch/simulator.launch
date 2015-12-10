@@ -1,0 +1,77 @@
+<launch>
+
+  <arg name="model" default="quadrotor" />
+ 
+  <group ns="$(arg model)">
+    
+    <node pkg="quadrotor_simulator"
+      type="quadrotor_simulator_so3"
+      name="$(arg model)_simulator_so3"
+      output="screen">
+      <param name="rate/odom" value="100.0"/>
+      <remap from="~odom" to="odom"/>
+      <remap from="~imu" to="quad_decode_msg/imu"/>
+      <remap from="~cmd" to="so3_cmd"/>
+    </node>
+    
+    <node pkg="nodelet"
+      type="nodelet"
+      name="standalone_nodelet"
+      args="manager"
+      output="screen"/>
+
+    <node pkg="nodelet"
+      type="nodelet"
+      name="controllers_manager"
+      args="load controllers_manager/ControllersManager standalone_nodelet"
+      output="screen">
+      <rosparam file="$(find ground_effect)/config/controllers.yaml"/>
+      <rosparam file="$(find ground_effect)/config/controller_params.yaml"/>
+      <remap from="~odom" to="odom"/>
+      <remap from="~cmd" to="position_cmd"/>
+    </node>
+    
+    <node pkg="nodelet"
+      type="nodelet"
+      args="load so3_control/SO3ControlNodelet standalone_nodelet"
+      name="so3_control"
+      required="true"
+      output="screen">
+      <remap from="~odom" to="odom"/>
+      <remap from="~position_cmd" to="position_cmd"/>
+      <remap from="~motors" to="motors"/>
+      <remap from="~corrections" to="corrections"/>
+      <remap from="~so3_cmd" to="so3_cmd"/>
+      <rosparam file="$(find ground_effect)/config/hummingbird_gains.yaml"/>
+      <param name="mass" value="0.5"/>
+    </node>
+
+    <node pkg="mesh_visualization"
+      type="mesh_visualization"
+      name="mesh_visualization"
+      output="screen">
+      <param name="mesh_resource" value="package://mesh_visualization/mesh/hummingbird.mesh" />
+      <param name="color/r" value="0.0"/>
+      <param name="color/g" value="0.0"/>
+      <param name="color/b" value="1.0"/>
+      <param name="color/a" value="0.7"/>
+      <remap from="~odom" to="odom"/>
+    </node>
+    
+    <!-- This is the state control node -->
+    <node pkg="ground_effect"
+	    type="state_control"
+	    name="state_control"
+      output="screen">
+      <rosparam file="$(find ground_effect)/config/$(arg model)_params.yaml" />
+      <param name="safety_catch" value="false"/>
+      <param name="traj_filename" type="string" value="/home/justin/git/ground_effect/traj.csv"/>
+    </node>
+   
+    <!-- node pkg="rviz"
+      type="rviz"
+      name="rviz"
+      args="-d $(find quadrotor_simulator)/launch/rviz_config.rviz"/ -->
+
+  </group>
+</launch>

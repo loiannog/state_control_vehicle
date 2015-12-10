@@ -1,0 +1,17 @@
+<launch>
+  
+  <arg name="model" />
+
+  <group ns="$(arg model)">
+
+    <!-- This is the state control node -->
+	  <node pkg="sc_ground_effect"
+	    type="sc_ground_effect"
+	    name="sc_ground_effect"
+      output="screen">
+      <rosparam file="$(find sc_ground_effect)/config/$(arg model)_params.yaml"/>
+    </node>
+
+  </group>
+
+</launch>

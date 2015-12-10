@@ -1,0 +1,19 @@
+function setpose()
+{
+  rostopic pub -1 /quadrotor/odom nav_msgs/Odometry "{pose: {pose: {position: {x: $1, y: $2, z: $3}, orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}}}"
+}
+
+function setimu()
+{
+  rostopic pub -1 /quadrotor/quad_decode_msg/imu sensor_msgs/Imu "{orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}"
+}
+
+function motorson()
+{
+  rostopic pub -1 /QuadrotorAlpha/so3_cmd quadrotor_msgs/SO3Command "{force: {x: 0.0, y: 0.0, z: 1.0}, aux: {enable_motors: True}}"
+}
+
+function motorsoff()
+{
+  rostopic pub -1 /QuadrotorAlpha/so3_cmd quadrotor_msgs/SO3Command "{force: {x: 0.0, y: 0.0, z: 1.0}, aux: {enable_motors: False}}"
+}

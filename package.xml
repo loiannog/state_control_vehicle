@@ -1,0 +1,32 @@
+<package>
+  <name>state_control_vehicle</name>
+  <version>1.0.0</version>
+  <description>
+  This package contains the state control node and trajectory generator
+  </description>
+  <maintainer email="loiannog@gmail.com">Giuseppe Loianno</maintainer>
+  <license>BSD</license>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>nav_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>quadrotor_msgs</build_depend>
+  <build_depend>trackers_manager</build_depend>
+  <build_depend>std_trackers</build_depend>
+  <build_depend>mav_manager</build_depend>
+
+  <!-- Dependencies needed after this package is compiled. -->
+  <run_depend>roscpp</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>nav_msgs</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>quadrotor_msgs</run_depend>
+  <run_depend>trackers_manager</run_depend>
+  <run_depend>std_trackers</run_depend>
+  <run_depend>mav_manager</run_depend>
+</package>

@@ -1,0 +1,12 @@
+line_tracker_distance:
+  default_v_des: 3.0
+  default_a_des: 0.6
+line_tracker_yaw:
+  default_v_des: 3.0
+  default_a_des: 0.6
+line_tracker_trapezoid:
+  default_v_des: 3.0
+  default_a_des: 0.6
+line_tracker_min_jerk:
+  default_v_des: 3.0
+  default_a_des: 0.6

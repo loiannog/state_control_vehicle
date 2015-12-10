@@ -1,0 +1,25 @@
+Things to do:
+
+50 trials (eventually > 100) @ each of 3 different heights (0, r, 2r, 3r, ... ?)
+
+50 trials (eventually > 100) @ varying payloads (0g, 150g, 300g)
+
+Different speeds: (0m/s, 0.5m/s, 1m/s); Do 0m/s first and use results to evaluate if we want to do 0.5m/s or greater
+
+rosbag record /QuadrotorKilo/motors /QuadrotorKilo/odom /QuadrotorKilo/position_cmd /QuadrotorKilo/quad_decode_msg/output_data /QuadrotorKilo/so3_cmd /QuadrotorKilo/traj_num /QuadrotorKilo/traj_signal /nanokontrol2
+
+For future info:
+- Consider yaw of robot (45 deg might be better)
+- Use a better robot w/ slightly larger markers (or fix up Kilo)
+- Consider further from ground effect (4r, 5r?)
+- Use diagonal instead of moving along x axis
+- Better safety catches
+  - Hover if too many frames drop
+  - Eland if even more drop
+- Pause (~1s) at beginning of each IGE and OGE segment
+- Pub an int for constant velocity segments (perhaps pass in like gains through the trajectory) 0 normally, 1 IGE, 2 OGE
+- Keep an eye on radio connection since there were some dropouts
+- Payload
+- Share experimental setup
+- Model to predict stabilty in ground effect (think springs under each motor)
+

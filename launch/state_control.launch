@@ -18,7 +18,7 @@
       args="manager"
       output="screen">
     <rosparam file="$(find mav_manager)/config/mav_manager_params.yaml" />
-</node>
+   </node>
 
     <node pkg="nodelet"
       type="nodelet"
@@ -55,7 +55,7 @@
     <remap from="~to_robot" to="to_robot"/>
     <remap from="~from_robot" to="from_robot"/>
   </node>
-
+  
   <node pkg="nodelet"
     type="nodelet"
     name="quad_decode_msg"
@@ -78,27 +78,10 @@
       type="state_control"
       name="state_control"
       output="screen">
-<param name="~mass" value="$(arg mass)" />
       <param name="traj_filename" type="string" value="/home/asantamaria/git/catkin_ws/src/upenn/state_control_vehicle/traj.csv"/>
       <rosparam file="$(find state_control_vehicle)/config/mav_manager_params.yaml" />
       <remap from="~odom" to="eskf_odom/odom"/>
-     <!-- <remap from="odom" to="eskf_odom/odom"/>-->
-          <remap from="~motors" to="motors"/>
-      <remap from="~estop" to="estop"/>
-      <remap from="~so3_cmd" to="so3_cmd"/>
-      <remap from="~position_cmd" to="position_cmd"/>
-      <remap from="~pwm_cmd" to="quad_encode_msg/pwm_cmd"/>
-      <remap from="~trackers_manager/line_tracker_min_jerk/goal" to="trackers_manager/line_tracker_min_jerk/goal"/>
-      <remap from="~trackers_manager/line_tracker_distance/goal" to="trackers_manager/line_tracker_distance/goal"/>
-      <remap from="~trackers_manager/velocity_tracker/vel_cmd_with_yaw" to="trackers_manager/velocity_tracker/vel_cmd_with_yaw"/>
-      <remap from="~trackers_manager/line_tracker_yaw/goal" to="trackers_manager/line_tracker_yaw/goal"/>
-
-
-      <!-- Service Remappings -->
-      <remap from="~trackers_manager/transition" to="trackers_manager/transition"/>
-
-
-	</node>
-
+      <remap from="odom" to="eskf_odom/odom"/>
+      </node>
   </group>
 </launch>

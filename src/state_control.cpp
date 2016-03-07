@@ -313,10 +313,7 @@ int main(int argc, char **argv)
     return 1;
   }
 */
-  // MAVManager stuff
-//  mav.reset(new MAVManager());
- // mav->set_need_imu(false);
-  //mav->set_use_attitude_safety_catch(false);
+
   // Publishers
   pub_traj_signal_ = n.advertise<std_msgs::Bool>("traj_signal", 1);
   pub_traj_num_ = n.advertise<std_msgs::Int16>("traj_num", 1);

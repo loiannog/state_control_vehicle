@@ -291,7 +291,7 @@ double norm(const geometry_msgs::Point &a, const geometry_msgs::Point &b)
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "state_control");
-  ros::NodeHandle n;
+  ros::NodeHandle n("~");
 
   // Position offsets for this robot
   n.param("offsets/x", xoff, 0.0);
@@ -300,7 +300,7 @@ int main(int argc, char **argv)
   n.param("offsets/yaw", yaw_off, 0.0);
   ROS_INFO("Using offsets: {xoff: %2.2f, yoff: %2.2f, zoff: %2.2f, yaw_off: %2.2f}", xoff, yoff, zoff, yaw_off);
 
-  n.param("state_control/traj_filename", traj_filename, string(""));
+/*  n.param("state_control/traj_filename", traj_filename, string(""));
 
   traj.set_filename(traj_filename.c_str());
   traj.setOffsets(xoff, yoff, zoff, yaw_off);
@@ -312,10 +312,11 @@ int main(int argc, char **argv)
     ROS_ERROR("Error Code: %d. Could not load %s", traj.get_error_code(), traj_filename.c_str());
     return 1;
   }
-
+*/
   // MAVManager stuff
-  mav.reset(new MAVManager());
-
+//  mav.reset(new MAVManager());
+ // mav->set_need_imu(false);
+  //mav->set_use_attitude_safety_catch(false);
   // Publishers
   pub_traj_signal_ = n.advertise<std_msgs::Bool>("traj_signal", 1);
   pub_traj_num_ = n.advertise<std_msgs::Int16>("traj_num", 1);
@@ -324,6 +325,10 @@ int main(int argc, char **argv)
   ros::Subscriber sub_odom = n.subscribe("odom", 1, &odom_cb, ros::TransportHints().tcpNoDelay());
   // ros::Subscriber sub_imu = n.subscribe("quad_decode_msg/imu", 1, &imu_cb, ros::TransportHints().tcpNoDelay());
   ros::Subscriber sub_nanokontrol = n.subscribe("/nanokontrol2", 1, nanokontrol_cb, ros::TransportHints().tcpNoDelay());
+  // MAVManager stuff
+  mav.reset(new MAVManager());
+  mav->set_need_imu(false);
+  mav->set_use_attitude_safety_catch(false);
 
   ros::spin();
 

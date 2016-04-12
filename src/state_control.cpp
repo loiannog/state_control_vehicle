@@ -63,6 +63,7 @@ Trajectory traj;
 quadrotor_msgs::PositionCommand traj_goal;
 static std::string traj_filename;
 static int traj_num_ = 0;
+static int max_traj_num = 0;
 static bool play_button_pressed = false;
 // =======================
 
@@ -223,8 +224,13 @@ static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
       double y = traj_goal.position.y;
       double z = traj_goal.position.z;
       double yaw = traj_goal.yaw;
-
-      if (mav->goTo(x, y, z, yaw))
+      
+   if(traj_num_ > max_traj_num){
+        if(mav->hover())
+        state_ = HOVER;
+	traj_num_ = 0;
+	}
+      else if (mav->goTo(x, y, z, yaw))
         state_ = PREP_TRAJ;
     }
     else
@@ -253,6 +259,7 @@ static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
              + pow(traj_goal.position.z - pos[2], 2) ) < 0.1 &&
          sqrt( pow(vel[0],2) + pow(vel[1],2) + pow(vel[2],2) ) < 0.1)
     {
+      
       state_ = TRAJ;
       traj_num_++;
 
@@ -300,7 +307,7 @@ int main(int argc, char **argv)
   n.param("offsets/yaw", yaw_off, 0.0);
   ROS_INFO("Using offsets: {xoff: %2.2f, yoff: %2.2f, zoff: %2.2f, yaw_off: %2.2f}", xoff, yoff, zoff, yaw_off);
 
-/*  n.param("state_control/traj_filename", traj_filename, string(""));
+  n.param("traj_filename", traj_filename, string(""));
 
   traj.set_filename(traj_filename.c_str());
   traj.setOffsets(xoff, yoff, zoff, yaw_off);
@@ -312,7 +319,7 @@ int main(int argc, char **argv)
     ROS_ERROR("Error Code: %d. Could not load %s", traj.get_error_code(), traj_filename.c_str());
     return 1;
   }
-*/
+
 
   // Publishers
   pub_traj_signal_ = n.advertise<std_msgs::Bool>("traj_signal", 1);

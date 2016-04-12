@@ -142,6 +142,7 @@ bool Trajectory::LoadTrajectory()
     std::getline(iss, val, ',');
     if (iss.fail())
     {
+	cout<<val<<endl;
       error_code_ = 2;
       loaded = false;
       return false;
@@ -175,6 +176,8 @@ bool Trajectory::LoadTrajectory()
     std::getline(file, line);
     if (file.fail())
     {
+        cout<<line<<endl;
+
       cout << "Error reading line " << dim0+1 << endl;
       error_code_ = 3;
       loaded = false;

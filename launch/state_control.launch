@@ -3,7 +3,10 @@
   <arg name="sim" value="0"/>
   <arg name="vicon" value="0"/>
   <arg name="vicon_fps" value="100"/>
-  <arg name="mass" default="0.750"/>
+  <arg name="mass" default="0.795"/>
+
+<!--<arg name="odotopic" value="odom"/>-->
+<arg name="odotopic" value="eskf_odom/odom"/>
 
 <group ns="$(arg model)">
 
@@ -27,7 +30,7 @@
       output="screen">
       <rosparam file="$(find trackers_manager)/config/trackers.yaml"/>
       <rosparam file="$(find state_control_vehicle)/config/hummingbird_gains.yaml"/>
-      <remap from="~odom" to="eskf_odom/odom"/>
+      <remap from="~odom" to="$(arg odotopic)"/>
       <remap from="~cmd" to="position_cmd"/>
     </node>
 
@@ -39,7 +42,8 @@
       output="screen">
       <rosparam file="$(find state_control_vehicle)/config/hummingbird_gains.yaml"/>
       <param name="mass" value="$(arg mass)"/>
-      <remap from="~odom" to="eskf_odom/odom"/>
+      <param name="use_external_yaw" value="false"/>
+      <remap from="~odom" to="$(arg odotopic)"/>
       <remap from="~position_cmd" to="position_cmd"/>
       <remap from="~so3_cmd" to="so3_cmd"/>
       <remap from="~motors" to="motors"/>
@@ -78,10 +82,10 @@
       type="state_control"
       name="state_control"
       output="screen">
-      <param name="traj_filename" type="string" value="/home/asantamaria/git/catkin_ws/src/upenn/state_control_vehicle/traj.csv"/>
+      <param name="traj_filename" type="string" value="/home/asantamaria/git/catkin_ws/src/upenn/state_control_vehicle/traj.txt"/>
       <rosparam file="$(find state_control_vehicle)/config/mav_manager_params.yaml" />
-      <remap from="~odom" to="eskf_odom/odom"/>
-      <remap from="odom" to="eskf_odom/odom"/>
+      <remap from="~odom" to="$(arg odotopic)"/>
+      <remap from="odom" to="$(arg odotopic)"/>
       </node>
   </group>
 </launch>

@@ -43,10 +43,17 @@ void Trajectory::UpdateGoal(quadrotor_msgs::PositionCommand &goal)
   goal.acceleration.y = traj_[i][1][2];
   goal.acceleration.z = traj_[i][2][2];
 
+  if(traj_[i][0].size() > 3){
   goal.jerk.x = traj_[i][0][3];
   goal.jerk.y = traj_[i][1][3];
   goal.jerk.z = traj_[i][2][3];
-
+}
+else
+{
+  goal.jerk.x = 0.0;
+  goal.jerk.y = 0.0;
+  goal.jerk.z = 0.0;
+}
   goal.yaw = traj_[i][3][0] + yaw_off;
   goal.yaw_dot = traj_[i][3][1];
 
@@ -58,53 +65,58 @@ void Trajectory::UpdateGoal(quadrotor_msgs::PositionCommand &goal)
   goal.kv[2] = traj_[i][4][5];
 }
 
-/*
-int main()
+
+/*int main()
 {
   // traj[time_idx][flat_output][derivative]
-  vector< vector< vector<double> > > traj;
-
-  int success = loadTraj("traj.csv", traj);
+  Trajectory traj;
+  string traj_filename = "/home/giuseppe/git/catkin_workspace/src/state_control_vehicle/traj.txt";
+  traj.set_filename(traj_filename.c_str());
+  traj.LoadTrajectory();
+  int success = traj.LoadTrajectory();
 
   cout << "Returned: " << success << endl;
 
   // Output the array
 
   // Loop through flat outputs
-  for (unsigned int i2=0; i2 < traj[0].size(); i2++)
+  for (unsigned int i2=0; i2 < traj.traj_[0].size(); i2++)
   {
     cout << "Flat Output (group): " << i2 << endl;
 
     // Loop through times
-    for (unsigned int i1=0; i1 < traj.size(); i1++)
+    for (unsigned int i1=0; i1 < traj.traj_.size(); i1++)
     {
 
       // Loop through derivatives
-      for (unsigned int i3=0; i3 < traj[i1][i2].size(); i3++)
+      for (unsigned int i3=0; i3 < traj.traj_[i1][i2].size(); i3++)
       {
-        cout << traj[i1][i2][i3] << " ";
+        cout << traj.traj_[i1][i2][i3] << " ";
       }
       cout << endl;
     }
     cout << endl;
   }
 
-  for (unsigned int i3=0; i3 < traj[0][0].size(); i3++)
+  for (unsigned int i3=0; i3 < traj.traj_[0][0].size(); i3++)
   {
     cout << "Derivative: " << i3 << endl;
-    for (unsigned int i1=0; i1 < traj.size(); i1++)
+    for (unsigned int i1=0; i1 < traj.traj_.size(); i1++)
     {
       // Flat Outputs
-      for (unsigned int i2=0; i2 < traj[0].size(); i2++)
+      for (unsigned int i2=0; i2 < traj.traj_[0].size(); i2++)
       {
-        cout << traj[i1][i2][i3] << " ";
+        cout << traj.traj_[i1][i2][i3] << " ";
       }
       cout << endl;
     }
     cout << endl;
   }
+
+
 }
 */
+
 
 bool Trajectory::LoadTrajectory()
 {

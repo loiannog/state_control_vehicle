@@ -11,7 +11,6 @@ class Trajectory
     int error_code_;
     std::string filename_;
     ros::Time start_time_;
-    traj_type traj_;
     bool completed, loaded;
     double xoff, yoff, zoff, yaw_off;
 
@@ -24,6 +23,7 @@ class Trajectory
     void set_start_time(ros::Time time) {start_time_ = time; completed = false;}
     void set_filename(const std::string fname) {filename_ = fname;}
     void setOffsets(double, double, double, double);
+    traj_type traj_;
 
     traj_type get_traj() {return traj_;}
     int  get_error_code() {return error_code_;}

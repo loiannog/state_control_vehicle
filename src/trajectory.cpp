@@ -18,7 +18,7 @@ void Trajectory::UpdateGoal(quadrotor_msgs::PositionCommand &goal)
   ros::Duration delta_time = ros::Time::now() - start_time_;
   double traj_time = delta_time.toSec();
 
-  unsigned long i = traj_time * 1000;
+  unsigned long i = traj_time * 2000;
 
   if (i > traj_.size()-1)
   {
@@ -54,7 +54,7 @@ else
   goal.jerk.y = 0.0;
   goal.jerk.z = 0.0;
 }
-  goal.yaw = traj_[i][3][0] + yaw_off;
+  goal.yaw = traj_[i][3][0];// + yaw_off;
   goal.yaw_dot = traj_[i][3][1];
 
   goal.kx[0] = traj_[i][4][0];
@@ -63,6 +63,7 @@ else
   goal.kv[0] = traj_[i][4][3];
   goal.kv[1] = traj_[i][4][4];
   goal.kv[2] = traj_[i][4][5];
+
 }
 
 

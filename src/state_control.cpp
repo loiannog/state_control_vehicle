@@ -34,6 +34,7 @@ using namespace std;
 #define RESET "\e[0m"
 
 std::shared_ptr<MAVManager> mav;
+ros::Publisher des_odom_pub;
 
 // State machine
 enum state_enum
@@ -199,7 +200,7 @@ static void nanokontrol_cb(const sensor_msgs::Joy::ConstPtr &msg)
 
         if (mav->goTo(x, y, z, yaw))
           state_ = PREP_TRAJ;
-      }
+      }      
     }
   }
 }
@@ -224,7 +225,7 @@ static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
       double y = traj_goal.position.y;
       double z = traj_goal.position.z;
       double yaw = traj_goal.yaw;
-      
+      std::cout << GREEN << "Completed trajectory " <<std::endl;
    if(traj_num_ > max_traj_num){
         if(mav->hover())
         state_ = HOVER;
@@ -241,6 +242,20 @@ static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
       std_msgs::Int16 traj_num_msg;
       traj_num_msg.data = traj_num_;
       pub_traj_num_.publish(traj_num_msg);
+      //publish the desired trajectory
+      nav_msgs::Odometry odom_des;
+      odom_des.header.stamp = ros::Time::now();
+      odom_des.pose.pose.position.x = traj_goal.position.x;
+      odom_des.pose.pose.position.y = traj_goal.position.y;
+      odom_des.pose.pose.position.z = traj_goal.position.z;
+      odom_des.pose.pose.orientation.w = traj_goal.yaw;//save just the yaw in the scalar part of the quaternion
+      odom_des.pose.pose.orientation.x = 0;
+      odom_des.pose.pose.orientation.y = 0;
+      odom_des.pose.pose.orientation.z = 0;
+      odom_des.twist.twist.linear.x = traj_goal.velocity.x;
+      odom_des.twist.twist.linear.y = traj_goal.velocity.y;
+      odom_des.twist.twist.linear.z = traj_goal.velocity.z;
+      des_odom_pub.publish(odom_des);
     }
   }
 
@@ -329,6 +344,7 @@ int main(int argc, char **argv)
   ros::Subscriber sub_odom = n.subscribe("odom", 1, &odom_cb, ros::TransportHints().tcpNoDelay());
   // ros::Subscriber sub_imu = n.subscribe("quad_decode_msg/imu", 1, &imu_cb, ros::TransportHints().tcpNoDelay());
   ros::Subscriber sub_nanokontrol = n.subscribe("/nanokontrol2", 1, nanokontrol_cb, ros::TransportHints().tcpNoDelay());
+  des_odom_pub = n.advertise<nav_msgs::Odometry>("des_odom", 1);
   // MAVManager stuff
   mav.reset(new MAVManager());
   mav->set_need_imu(false);

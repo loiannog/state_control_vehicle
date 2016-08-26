@@ -82,10 +82,11 @@
       type="state_control"
       name="state_control"
       output="screen">
-      <param name="traj_filename" type="string" value="/home/asantamaria/git/catkin_ws/src/upenn/state_control_vehicle/traj.txt"/>
+      <param name="traj_filename" type="string" value="/home/giuseppe/Dropbox/papers/2016/icra2017_eagle/trajectory_planning/window_trajectory/traj.txt"/>
       <rosparam file="$(find state_control_vehicle)/config/mav_manager_params.yaml" />
       <remap from="~odom" to="$(arg odotopic)"/>
       <remap from="odom" to="$(arg odotopic)"/>
       </node>
+      
   </group>
 </launch>

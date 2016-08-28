@@ -96,8 +96,8 @@
     </node>
     
     <node pkg="vio_qc"
-      type="mvVISLAMEagle"
-      name="mvVISLAMEagle"
+      type="MVSampleVISLAMEagle"
+      name="MVSampleVISLAMEagle"
       output="screen" args = "-a">
       <remap from="~vio_pose" to="vio_pose"/>
       <remap from="~imu" to="imu"/>

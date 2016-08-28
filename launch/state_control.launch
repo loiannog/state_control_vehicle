@@ -94,6 +94,22 @@
       <remap from="~odom" to="$(arg odotopic)"/>
       <remap from="~so3_cmd" to="so3_cmd"/>
     </node>
+    
+    <node pkg="vio_qc"
+      type="mvVISLAMEagle"
+      name="mvVISLAMEagle"
+      output="screen" args = "-a">
+      <remap from="~vio_pose" to="vio_pose"/>
+      <remap from="~imu" to="imu"/>
+      </node>
+      
+     <node pkg="quadrotor_ukf_lite"
+      type="quadrotor_ukf"
+      name="quadrotor_ukf"
+      output="screen">
+      <remap from="~odom_slam" to="vio_pose"/>
+      <remap from="~imu" to="imu"/>
+      </node>
       
   </group>
 </launch>

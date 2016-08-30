@@ -210,16 +210,16 @@ static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
 {
 
       odom_des.header.stamp = ros::Time::now();
-      odom_des.pose.pose.position.x = traj_goal.position.x;
-      odom_des.pose.pose.position.y = traj_goal.position.y;
-      odom_des.pose.pose.position.z = traj_goal.position.z;
-      odom_des.pose.pose.orientation.w = traj_goal.yaw;//save just the yaw in the scalar part of the quaternion
+      odom_des.pose.pose.position.x = msg->pose.pose.position.x;
+      odom_des.pose.pose.position.y = msg->pose.pose.position.y;
+      odom_des.pose.pose.position.z = msg->pose.pose.position.z;
+      odom_des.pose.pose.orientation.w = 1;//save just the yaw in the scalar part of the quaternion
       odom_des.pose.pose.orientation.x = 0;
       odom_des.pose.pose.orientation.y = 0;
       odom_des.pose.pose.orientation.z = 0;
-      odom_des.twist.twist.linear.x = traj_goal.velocity.x;
-      odom_des.twist.twist.linear.y = traj_goal.velocity.y;
-      odom_des.twist.twist.linear.z = traj_goal.velocity.z;
+      odom_des.twist.twist.linear.x = msg->twist.twist.linear.x;
+      odom_des.twist.twist.linear.y = msg->twist.twist.linear.x;
+      odom_des.twist.twist.linear.z = msg->twist.twist.linear.x;
       des_odom_pub.publish(odom_des);
  
   // If we are currently executing a trajectory, update the setpoint

@@ -208,18 +208,19 @@ static void nanokontrol_cb(const sensor_msgs::Joy::ConstPtr &msg)
 
 static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
 {
-  if(state_ != TRAJ  && state_ != PREP_TRAJ){
+  if(state_ != TRAJ){
       odom_des.header.stamp = ros::Time::now();
-      odom_des.pose.pose.position.x = 0;
-      odom_des.pose.pose.position.y = 0;
-      odom_des.pose.pose.position.z = 0;
-      odom_des.pose.pose.orientation.w = 1;//save just the yaw in the scalar part of the quaternion
+      odom_des.pose.pose.position.x = traj_goal.position.x;
+      odom_des.pose.pose.position.y = traj_goal.position.y;
+      odom_des.pose.pose.position.z = traj_goal.position.z;
+      odom_des.pose.pose.orientation.w = traj_goal.yaw;//save just the yaw in the scalar part of the quaternion
       odom_des.pose.pose.orientation.x = 0;
       odom_des.pose.pose.orientation.y = 0;
       odom_des.pose.pose.orientation.z = 0;
-      odom_des.twist.twist.linear.x = 0;
-      odom_des.twist.twist.linear.y = 0;
-      odom_des.twist.twist.linear.z = 0;
+      odom_des.twist.twist.linear.x = traj_goal.velocity.x;
+      odom_des.twist.twist.linear.y = traj_goal.velocity.y;
+      odom_des.twist.twist.linear.z = traj_goal.velocity.z;
+      des_odom_pub.publish(odom_des);
       des_odom_pub.publish(odom_des);  
   }
   // If we are currently executing a trajectory, update the setpoint
@@ -281,18 +282,6 @@ static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
           odom_des.header.stamp = ros::Time::now();
 
     traj.UpdateGoal(traj_goal);
-      
-      odom_des.pose.pose.position.x = traj_goal.position.x;
-      odom_des.pose.pose.position.y = traj_goal.position.y;
-      odom_des.pose.pose.position.z = traj_goal.position.z;
-      odom_des.pose.pose.orientation.w = traj_goal.yaw;//save just the yaw in the scalar part of the quaternion
-      odom_des.pose.pose.orientation.x = 0;
-      odom_des.pose.pose.orientation.y = 0;
-      odom_des.pose.pose.orientation.z = 0;
-      odom_des.twist.twist.linear.x = traj_goal.velocity.x;
-      odom_des.twist.twist.linear.y = traj_goal.velocity.y;
-      odom_des.twist.twist.linear.z = traj_goal.velocity.z;
-      des_odom_pub.publish(odom_des);
     // If we are ready to start the trajectory
     Eigen::Vector3f pos = mav->pos();
     Eigen::Vector3f vel = mav->vel();

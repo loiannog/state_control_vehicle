@@ -78,6 +78,8 @@ static geometry_msgs::Point goal;
 // Function Prototypes
 double norm(const geometry_msgs::Point &a, const geometry_msgs::Point &b);
 
+nav_msgs::Odometry odom_des;
+
 // Callbacks and functions
 static void nanokontrol_cb(const sensor_msgs::Joy::ConstPtr &msg)
 {
@@ -107,8 +109,20 @@ static void nanokontrol_cb(const sensor_msgs::Joy::ConstPtr &msg)
   if(state_ == INIT)
   {
     // Motors on (Rec)
-    if(msg->buttons[motors_on_button])
+    if(msg->buttons[motors_on_button]){
       mav->set_motors(true);
+      odom_des.pose.pose.position.x = 0.0;
+      odom_des.pose.pose.position.y = 0;
+      odom_des.pose.pose.position.z = 0;
+      odom_des.pose.pose.orientation.w = 0;//save just the yaw in the scalar part of the quaternion
+      odom_des.pose.pose.orientation.x = 0;
+      odom_des.pose.pose.orientation.y = 0;
+      odom_des.pose.pose.orientation.z = 0;
+      odom_des.twist.twist.linear.x = 0;
+      odom_des.twist.twist.linear.y = 0;
+      odom_des.twist.twist.linear.z = 0;
+      des_odom_pub.publish(odom_des);
+    }
 
     // Take off (Play)
     if(msg->buttons[play_button])
@@ -120,6 +134,23 @@ static void nanokontrol_cb(const sensor_msgs::Joy::ConstPtr &msg)
         ROS_INFO("Initiating launch sequence...");
         if(mav->takeoff())
           state_ = TAKEOFF;
+       odom_des.header.stamp = ros::Time::now();
+
+      std_msgs::Int16 traj_num_msg;
+      traj_num_msg.data = traj_num_;
+      pub_traj_num_.publish(traj_num_msg);
+
+      odom_des.pose.pose.position.x = 0.1;
+      odom_des.pose.pose.position.y = 0;
+      odom_des.pose.pose.position.z = 0;
+      odom_des.pose.pose.orientation.w = 0;//save just the yaw in the scalar part of the quaternion
+      odom_des.pose.pose.orientation.x = 0;
+      odom_des.pose.pose.orientation.y = 0;
+      odom_des.pose.pose.orientation.z = 0;
+      odom_des.twist.twist.linear.x = 0;
+      odom_des.twist.twist.linear.y = 0;
+      odom_des.twist.twist.linear.z = 0;
+      des_odom_pub.publish(odom_des);
       }
     }
     else
@@ -233,18 +264,29 @@ static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
 	}
       else if (mav->goTo(x, y, z, yaw))
         state_ = PREP_TRAJ;
+      odom_des.pose.pose.position.x = x;
+      odom_des.pose.pose.position.y = y;
+      odom_des.pose.pose.position.z = z
+      odom_des.pose.pose.orientation.w = 0;//save just the yaw in the scalar part of the quaternion
+      odom_des.pose.pose.orientation.x = 0;
+      odom_des.pose.pose.orientation.y = 0;
+      odom_des.pose.pose.orientation.z = 0;
+      odom_des.twist.twist.linear.x = 0;
+      odom_des.twist.twist.linear.y = 0;
+      odom_des.twist.twist.linear.z = 0;
+      des_odom_pub.publish(odom_des);
     }
     else
     {
+       //publish the desired trajectory
+      odom_des.header.stamp = ros::Time::now();
       traj.UpdateGoal(traj_goal);
       mav->setPositionCommand(traj_goal);
 
       std_msgs::Int16 traj_num_msg;
       traj_num_msg.data = traj_num_;
       pub_traj_num_.publish(traj_num_msg);
-      //publish the desired trajectory
-      nav_msgs::Odometry odom_des;
-      odom_des.header.stamp = ros::Time::now();
+
       odom_des.pose.pose.position.x = traj_goal.position.x;
       odom_des.pose.pose.position.y = traj_goal.position.y;
       odom_des.pose.pose.position.z = traj_goal.position.z;

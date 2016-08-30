@@ -208,7 +208,7 @@ static void nanokontrol_cb(const sensor_msgs::Joy::ConstPtr &msg)
 
 static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
 {
-  if(state_ != TRAJ && ) && state_ != PREP_TRAJ{
+  if(state_ != TRAJ  && state_ != PREP_TRAJ){
       odom_des.header.stamp = ros::Time::now();
       odom_des.pose.pose.position.x = 0;
       odom_des.pose.pose.position.y = 0;

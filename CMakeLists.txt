@@ -39,6 +39,4 @@ catkin_package(
   DEPENDS Eigen)
 
 add_executable(state_control src/state_control.cpp src/trajectory.cpp)
-add_executable(window_visualizer_env src/window_visualizer_env.cpp)
 target_link_libraries(state_control ${catkin_LIBRARIES})
-target_link_libraries(window_visualizer_env ${catkin_LIBRARIES})

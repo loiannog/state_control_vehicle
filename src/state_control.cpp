@@ -248,8 +248,8 @@ static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
         state_ = HOVER;
 	traj_num_ = 0;
 	}
-      else if (mav->goTo(x, y, z, yaw))
-        state_ = PREP_TRAJ;
+     // else if (mav->goTo(x, y, z, yaw))
+       // state_ = PREP_TRAJ;
     }
     else
     {
@@ -290,7 +290,7 @@ static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
     if ( sqrt( pow(traj_goal.position.x - pos[0], 2)
              + pow(traj_goal.position.y - pos[1], 2)
              + pow(traj_goal.position.z - pos[2], 2) ) < 0.1 &&
-         sqrt( pow(vel[0],2) + pow(vel[1],2) + pow(vel[2],2) ) < 0.05)
+         sqrt( pow(vel[0],2) + pow(vel[1],2) + pow(vel[2],2) ) < 0.1)
     {
       
       state_ = TRAJ;

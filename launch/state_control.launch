@@ -5,7 +5,7 @@
   <arg name="vicon_fps" value="100"/>
   <arg name="mass" default="0.250"/>
 
-<!--<arg name="odotopic" value="/qualisys/QuadrotorQc2/odom"/>-->
+<!--<arg name="odotopic" value="/qualisys/QuadrotorQc1/odom"/>-->
 <arg name="odotopic" value="/QuadrotorQc2/quadrotor_ukf/control_odom"/>
 <group ns="$(arg model)">
 
@@ -104,7 +104,7 @@
       <remap from="~imu" to="imu"/>
       </node>
       
-     <node pkg="quadrotor_ukf_lite"
+     <node pkg="quadrotor_ukf"
       type="quadrotor_ukf"
       name="quadrotor_ukf"
       output="screen">

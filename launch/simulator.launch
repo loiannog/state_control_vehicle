@@ -92,7 +92,7 @@
       <remap from="odom" to="odom"/>
       </node>
       
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find groundstation_vio_qc)/groundstation_vio_qc.rviz"/>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find groundstation_vio_qc)/groundstation_vio_qc_sim.rviz"/>
 
 
   </group>

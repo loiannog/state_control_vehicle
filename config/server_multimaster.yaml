@@ -1,4 +1,4 @@
-ignore_nodes : ['/*']
+#ignore_nodes : ['/*']
 ignore_services : ['/*']
 
 sync_nodes: ['/kontrol']

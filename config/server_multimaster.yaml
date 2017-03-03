@@ -1,3 +1,6 @@
+ignore_nodes : ['/*']
+ignore_services : ['/*']
+
 sync_nodes: []
 sync_topics: ['/nanokontrol2']
 sync_services: []

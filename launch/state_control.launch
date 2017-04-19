@@ -1,15 +1,23 @@
 <launch>
-<arg name="model" default="QuadrotorQc2"/>
+<arg name="model" default="QuadrotorQc4"/>
   <arg name="sim" value="0"/>
   <arg name="vicon" value="0"/>
   <arg name="vicon_fps" value="100"/>
   <arg name="mass" default="0.250"/>
 
 <!--<arg name="odotopic" value="/qualisys/QuadrotorQc1/odom"/>-->
-<arg name="odotopic" value="/QuadrotorQc2/quadrotor_ukf/control_odom"/>
+<arg name="odotopic" value="/QuadrotorQc4/quadrotor_ukf/control_odom"/>
 <group ns="$(arg model)">
 
     <param name="mass" value="$(arg mass)"/>
+
+    <node pkg="master_discovery_fkie" type="master_discovery" name="master_discovery">
+      <param name="mcast_group" value="224.0.0.1" />
+    </node>
+  
+    <node pkg="master_sync_fkie" type="master_sync" name="multimaster_client_sync">
+      <rosparam file="$(find state_control_vehicle)/config/server_multimaster.yaml" />
+    </node>
 
       <node pkg="nodelet"
       type="nodelet"
@@ -78,7 +86,7 @@
       type="state_control"
       name="state_control"
       output="screen">
-      <param name="traj_filename" type="string" value="/home/linaro/trajectory/traj.txt"/>
+      <param name="traj_filename" type="string" value="/home/dragonfly4/trajectory/traj.txt"/>
       <rosparam file="$(find state_control_vehicle)/config/mav_manager_params.yaml" />
       <remap from="~odom" to="$(arg odotopic)"/>
       <remap from="odom" to="$(arg odotopic)"/>

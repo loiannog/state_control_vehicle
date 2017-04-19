@@ -1,0 +1,3 @@
+sync_nodes: []
+sync_topics: ['/nanokontrol2']
+sync_services: []

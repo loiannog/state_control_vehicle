@@ -1,3 +1,4 @@
 sync_topics: ['/nanokontrol2']
 ignore_nodes: ['/rviz']
+ignore_services: ['/*']
 

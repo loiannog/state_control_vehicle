@@ -76,7 +76,7 @@
       <remap from="~serial_msg" to="to_robot"/>
     </node>
 
-    <!--<node pkg="state_control_vehicle"
+    <node pkg="state_control_vehicle"
       type="state_control"
       name="state_control"
       output="screen">
@@ -85,7 +85,7 @@
       <remap from="~odom" to="$(arg odotopic)"/>
       <remap from="odom" to="$(arg odotopic)"/>
       <remap from="~des_odom" to="des_odom"/>
-      </node>-->
+      </node>
 
  <node pkg="nodelet"
       type="nodelet"
@@ -98,13 +98,13 @@
       <remap from="~wm" to="wm"/>
     </node>
     
-     <!--<node pkg="vio_qc"
+     <node pkg="vio_qc"
       type="MVSampleVISLAMEagle"
       name="MVSampleVISLAMEagle"
       output="screen" args = "-a">
       <remap from="~vio_pose" to="vio_pose"/>
       <remap from="~imu" to="imu"/>
-      </node>-->
+      </node>
       
      <node pkg="quadrotor_ukf"
       type="quadrotor_ukf"

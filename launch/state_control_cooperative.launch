@@ -1,5 +1,5 @@
 <launch>
-<arg name="model" default="QuadrotorQc4"/>
+<arg name="model" default="QuadrotorQc18"/>
   <arg name="sim" value="0"/>
   <arg name="vicon" value="0"/>
   <arg name="vicon_fps" value="100"/>
@@ -63,24 +63,15 @@
       <remap from="~odom" to="$(arg odotopic)"/>
       <remap from="~imu" to="imu"/>
       <remap from="~motors" to="motors"/>
+      <remap from="~att_cmd" to="so3_cmd"/>
       <remap from="~wm" to="wm"/>
-    </node>
-
-    <node pkg="nodelet"
-      type="nodelet"
-      name="quad_encode_msg"
-      args="load quad_encode_msg/QuadEncodeMsg standalone_nodelet"
-      output="screen"
-      unless="$(arg sim)">
-      <remap from="~so3_cmd" to="so3_cmd"/>
-      <remap from="~serial_msg" to="to_robot"/>
     </node>
 
     <node pkg="state_control_vehicle"
       type="state_control"
       name="state_control"
       output="screen">
-      <param name="traj_filename" type="string" value="/home/dragonfly4/trajectory/traj.txt"/>
+      <param name="traj_filename" type="string" value="/home/dragonfly18/trajectory/traj.txt"/>
       <rosparam file="$(find state_control_vehicle)/config/mav_manager_params.yaml" />
       <remap from="~odom" to="$(arg odotopic)"/>
       <remap from="odom" to="$(arg odotopic)"/>

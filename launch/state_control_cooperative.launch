@@ -6,7 +6,7 @@
   <arg name="mass" default="0.250"/>
 
 <!--<arg name="odotopic" value="/qualisys/QuadrotorQc1/odom"/>-->
-<arg name="odotopic" value="/QuadrotorQc4/quadrotor_ukf/control_odom"/>
+<arg name="odotopic" value="/QuadrotorQc18/quadrotor_ukf/control_odom"/>
 <group ns="$(arg model)">
 
     <param name="mass" value="$(arg mass)"/>
@@ -61,8 +61,7 @@
       output="screen">
       <rosparam file="$(find state_control_vehicle)/config/QuadrotorQ2_gains.yaml"/>
       <remap from="~odom" to="$(arg odotopic)"/>
-      <remap from="~imu" to="imu"/>
-      <remap from="~motors" to="motors"/>
+      <remap from="~odom" to="$(arg odotopic)"/>
       <remap from="~att_cmd" to="so3_cmd"/>
       <remap from="~wm" to="wm"/>
     </node>

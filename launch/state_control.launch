@@ -45,6 +45,7 @@
       required="true"
       output="screen">
       <rosparam file="$(find state_control_vehicle)/config/QuadrotorQ2_gains.yaml"/>
+      <rosparam file="$(find state_control_vehicle)/config/structure_params.yaml"/>
       <param name="mass" value="$(arg mass)"/>
       <param name="use_external_yaw" value="false"/>
       <remap from="~odom" to="$(arg odotopic)"/>
@@ -52,25 +53,6 @@
       <remap from="~so3_cmd" to="so3_cmd"/>
       <remap from="~motors" to="motors"/>
     </node>
-
-<!--  <node pkg="nodelet"
-    type="nodelet"
-    name="quad_serial_comm"
-    args="standalone quad_serial_comm/QuadSerialComm"
-    output="screen">
-    <param name="device" value="/dev/ttyUSB0"/>
-    <param name="baud_rate" value="230400"/>
-    <remap from="~to_robot" to="to_robot"/>
-    <remap from="~from_robot" to="from_robot"/>
-  </node> -->
-  
-  <!--<node pkg="nodelet"
-    type="nodelet"
-    name="quad_decode_msg"
-    args="standalone quad_decode_msg/QuadDecodeMsg"
-    output="screen">
-    <remap from="~serial" to="from_robot"/>
-  </node>-->
 
     <node pkg="nodelet"
       type="nodelet"

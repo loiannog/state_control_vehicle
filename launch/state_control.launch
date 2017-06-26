@@ -3,7 +3,7 @@
   <arg name="sim" value="0"/>
   <arg name="vicon" value="0"/>
   <arg name="vicon_fps" value="100"/>
-  <arg name="mass" default="0.350"/>
+  <arg name="mass" default="0.250"/>
 
 <!--<arg name="odotopic" value="/qualisys/QuadrotorQc1/odom"/>-->
 <arg name="odotopic" value="/QuadrotorQc18/quadrotor_ukf/control_odom"/>
@@ -45,7 +45,6 @@
       required="true"
       output="screen">
       <rosparam file="$(find state_control_vehicle)/config/QuadrotorQ2_gains.yaml"/>
-      <rosparam file="$(find state_control_vehicle)/config/structure_params.yaml"/>
       <param name="mass" value="$(arg mass)"/>
       <param name="use_external_yaw" value="false"/>
       <remap from="~odom" to="$(arg odotopic)"/>
@@ -56,12 +55,16 @@
 
     <node pkg="nodelet"
       type="nodelet"
-      name="quad_encode_msg"
-      args="load quad_encode_msg/QuadEncodeMsg standalone_nodelet"
-      output="screen"
-      unless="$(arg sim)">
-      <remap from="~so3_cmd" to="so3_cmd"/>
-      <remap from="~serial_msg" to="to_robot"/>
+      args="load so3_control/SO3AttControlNodelet standalone_nodelet"
+      name="so3attitude_control"
+      required="true"
+      output="screen">
+      <rosparam file="$(find state_control_vehicle)/config/QuadrotorQ2_gains.yaml"/>
+      <rosparam file="$(find state_control_vehicle)/config/structure_params.yaml"/>
+      <remap from="~odom" to="$(arg odotopic)"/>
+      <remap from="~odom" to="$(arg odotopic)"/>
+      <remap from="~att_cmd" to="so3_cmd"/>
+      <remap from="~wm" to="wm"/>
     </node>
 
     <node pkg="state_control_vehicle"
@@ -83,7 +86,7 @@
       clear_params="true"
       output="screen">
       <remap from="~odom" to="$(arg odotopic)"/>
-      <remap from="~so3_cmd" to="so3_cmd"/>
+      <remap from="~wm" to="wm"/>
     </node>
     
      <node pkg="vio_qc"
@@ -104,3 +107,4 @@
       
   </group>
 </launch>
+

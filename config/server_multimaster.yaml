@@ -1,4 +1,4 @@
-sync_topics: ['/nanokontrol2']
+sync_topics: ['/nanokontrol2','/vicon/TransportationBar/odom']
 ignore_nodes: ['/rviz']
 ignore_services: ['/*']
 

@@ -1,12 +1,15 @@
 <launch>
-<arg name="model" default="QuadrotorQc18"/>
+<arg name="model" default="QuadrotorQc19"/>
   <arg name="sim" value="0"/>
   <arg name="vicon" value="0"/>
   <arg name="vicon_fps" value="100"/>
-  <arg name="mass" default="0.250"/>
+  <arg name="mass" default="0.635"/>
 
-<!--<arg name="odotopic" value="/qualisys/QuadrotorQc1/odom"/>-->
-<arg name="odotopic" value="/QuadrotorQc18/quadrotor_ukf/control_odom"/>
+<!--<arg name="odotopic_bar_vicon" value="/vicon/TransportationBar/odom"/>-->
+<arg name="odotopic_bar_vicon" value="/QuadrotorQc19/quadrotor_ukf/control_odom"/>
+<arg name="odotopic" value="/QuadrotorQc19/quadrotor_ukf/control_odom"/>
+<!--<arg name="odotopic" value="/vicon/TransportationBar/odom"/>-->
+
 <group ns="$(arg model)">
 
     <param name="mass" value="$(arg mass)"/>
@@ -34,7 +37,7 @@
       output="screen">
       <rosparam file="$(find trackers_manager)/config/trackers.yaml"/>
       <rosparam file="$(find state_control_vehicle)/config/QuadrotorQ2_gains.yaml"/>
-      <remap from="~odom" to="$(arg odotopic)"/>
+      <remap from="~odom" to="$(arg odotopic_bar_vicon)"/>
       <remap from="~cmd" to="position_cmd"/>
     </node>
 
@@ -47,7 +50,7 @@
       <rosparam file="$(find state_control_vehicle)/config/QuadrotorQ2_gains.yaml"/>
       <param name="mass" value="$(arg mass)"/>
       <param name="use_external_yaw" value="false"/>
-      <remap from="~odom" to="$(arg odotopic)"/>
+      <remap from="~odom" to="$(arg odotopic_bar_vicon)"/>
       <remap from="~position_cmd" to="position_cmd"/>
       <remap from="~so3_cmd" to="so3_cmd"/>
       <remap from="~motors" to="motors"/>
@@ -71,10 +74,10 @@
       type="state_control"
       name="state_control"
       output="screen">
-      <param name="traj_filename" type="string" value="/home/dragonfly18/trajectory/traj.txt"/>
+      <param name="traj_filename" type="string" value="/home/dragonfly19/trajectory/traj.txt"/>
       <rosparam file="$(find state_control_vehicle)/config/mav_manager_params.yaml" />
-      <remap from="~odom" to="$(arg odotopic)"/>
-      <remap from="odom" to="$(arg odotopic)"/>
+      <remap from="~odom" to="$(arg odotopic_bar_vicon)"/>
+      <remap from="odom" to="$(arg odotopic_bar_vicon)"/>
       <remap from="~des_odom" to="des_odom"/>
       </node>
 

@@ -4,3 +4,5 @@ distribution:
   posz: {z1: 0.0, z2: 0.0, z3: 0.0, z4: 0.0}
   pospsi: {psi1: 0.0, psi2: 0.0, psi3: 0.0, psi4: 0.0}
 num_vehicles: 2
+secondaty_task: false
+

@@ -106,6 +106,8 @@
       output="screen">
       <remap from="~odom_slam" to="vio_pose"/>
       <remap from="~imu" to="imu"/>
+      <rosparam file="$(find state_control_vehicle)/config/QuadrotorQ2_gains2bar.yaml"/>
+      <rosparam file="$(find state_control_vehicle)/config/structure_params.yaml"/>
       </node>
       
   </group>

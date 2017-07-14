@@ -1,13 +1,13 @@
 <launch>
-<arg name="model" default="QuadrotorQc19"/>
+<arg name="model" default="QuadrotorQc18"/>
   <arg name="sim" value="0"/>
   <arg name="vicon" value="0"/>
   <arg name="vicon_fps" value="100"/>
   <arg name="mass" default="0.635"/>
 
 <!--<arg name="odotopic_bar_vicon" value="/vicon/TransportationBar/odom"/>-->
-<arg name="odotopic_bar_vicon" value="/QuadrotorQc19/quadrotor_ukf/control_odom"/>
-<arg name="odotopic" value="/QuadrotorQc19/quadrotor_ukf/control_odom"/>
+<arg name="odotopic_bar_vicon" value="/QuadrotorQc18/quadrotor_ukf/control_odom"/>
+<arg name="odotopic" value="/QuadrotorQc18/quadrotor_ukf/control_odom"/>
 <!--<arg name="odotopic" value="/vicon/TransportationBar/odom"/>-->
 
 <group ns="$(arg model)">
@@ -74,7 +74,7 @@
       type="state_control"
       name="state_control"
       output="screen">
-      <param name="traj_filename" type="string" value="/home/dragonfly19/trajectory/traj.txt"/>
+      <param name="traj_filename" type="string" value="/home/dragonfly18/trajectory/traj.txt"/>
       <rosparam file="$(find state_control_vehicle)/config/mav_manager_params.yaml" />
       <remap from="~odom" to="$(arg odotopic_bar_vicon)"/>
       <remap from="odom" to="$(arg odotopic_bar_vicon)"/>

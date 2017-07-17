@@ -4,16 +4,7 @@
 typedef std::vector< std::vector< std::vector<double> > > traj_type;
 
 // int loadTraj(const std::string &filename, traj_type &traj);
-ros::Time getMonotonicTime()
-  {
-      struct timespec t;
-      clock_gettime( CLOCK_MONOTONIC, &t );
-      uint64_t timeNanoSecMonotonic = t.tv_sec * 1000000000ULL + t.tv_nsec;
-      //return (int64_t)timeNanoSecMonotonic;
-      ros::Time time_monoros;
-      time_monoros.fromSec((double)(timeNanoSecMonotonic/1000000000.0));
-      return time_monoros;
-  }
+ros::Time getMonotonicTime();
 
 class Trajectory
 {

@@ -75,9 +75,11 @@ static ros::Publisher pub_traj_num_;
 // Quadrotor Pose
 static geometry_msgs::Point goal;
 nav_msgs::Odometry odom_des;
+nav_msgs::Odometry curr_odom;
 
 // Function Prototypes
 double norm(const geometry_msgs::Point &a, const geometry_msgs::Point &b);
+
 
 // Callbacks and functions
 static void nanokontrol_cb(const sensor_msgs::Joy::ConstPtr &msg)
@@ -153,6 +155,8 @@ static void nanokontrol_cb(const sensor_msgs::Joy::ConstPtr &msg)
       // Marker Set
       if (mav->hover())
         state_ = HOVER;
+        odom_des = curr_odom;
+        des_odom_pub.publish(odom_des);
     }
     else if(msg->buttons[home_button])
     {
@@ -199,8 +203,20 @@ static void nanokontrol_cb(const sensor_msgs::Joy::ConstPtr &msg)
         double z = traj_goal.position.z;
         double yaw = traj_goal.yaw;
 
-        if (mav->goTo(x, y, z, yaw))
+        if (mav->goTo(x, y, z, yaw)){
           state_ = PREP_TRAJ;
+      des_odom.header.stamp = getMonotonicTime();//ros::Time::now();
+      des_odom.pose.pose.position.x = x;
+      des_odom.pose.pose.position.y = y;
+      des_odom.pose.pose.position.z = z;
+      des_odom.pose.pose.orientation.w = yaw;//save just the yaw in the scalar part of the quaternion
+      des_odom.pose.pose.orientation.x = 0;
+      des_odom.pose.pose.orientation.y = 0;
+      des_odom.pose.pose.orientation.z = 0;
+      des_odom.twist.twist.linear.x = 0;
+      des_odom.twist.twist.linear.y = 0;
+      des_odom.twist.twist.linear.z = 0;
+        }
       }      
     }
   }
@@ -208,10 +224,21 @@ static void nanokontrol_cb(const sensor_msgs::Joy::ConstPtr &msg)
 
 static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
 {
+      curr_odom.header.stamp = getMonotonicTime();//ros::Time::now();
+      curr_odom.pose.pose.position.x = msg->pose.pose.position.x;
+      curr_odom.pose.pose.position.y = msg->pose.pose.position.y;
+      curr_odom.pose.pose.position.z = msg->pose.pose.position.z;
+      curr_odom.pose.pose.orientation.w = 1;//save just the yaw in the scalar part of the quaternion
+      curr_odom.pose.pose.orientation.x = 0;
+      curr_odom.pose.pose.orientation.y = 0;
+      curr_odom.pose.pose.orientation.z = 0;
+      curr_odom.twist.twist.linear.x = msg->twist.twist.linear.x;
+      curr_odom.twist.twist.linear.y = msg->twist.twist.linear.y;
+      curr_odom.twist.twist.linear.z = msg->twist.twist.linear.z;
 
-  if (state_ != TRAJ)
+ /* if (state_ != TRAJ)
   {
-      odom_des.header.stamp = ros::Time::now();
+      odom_des.header.stamp = getMonotonicTime();//ros::Time::now();
       odom_des.pose.pose.position.x = msg->pose.pose.position.x;
       odom_des.pose.pose.position.y = msg->pose.pose.position.y;
       odom_des.pose.pose.position.z = msg->pose.pose.position.z;
@@ -220,10 +247,10 @@ static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
       odom_des.pose.pose.orientation.y = 0;
       odom_des.pose.pose.orientation.z = 0;
       odom_des.twist.twist.linear.x = msg->twist.twist.linear.x;
-      odom_des.twist.twist.linear.y = msg->twist.twist.linear.x;
-      odom_des.twist.twist.linear.z = msg->twist.twist.linear.x;
+      odom_des.twist.twist.linear.y = msg->twist.twist.linear.y;
+      odom_des.twist.twist.linear.z = msg->twist.twist.linear.z;
       des_odom_pub.publish(odom_des);
- }
+ }*/
   // If we are currently executing a trajectory, update the setpoint
   if (state_ == TRAJ)
   {
@@ -246,6 +273,8 @@ static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
    if(traj_num_ > max_traj_num){
         if(mav->hover())
         state_ = HOVER;
+        odom_des = curr_odom;
+        des_odom_pub.publish(odom_des);
 	traj_num_ = 0;
 	}
      // else if (mav->goTo(x, y, z, yaw))
@@ -253,7 +282,7 @@ static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
     }
     else
     {
-      odom_des.header.stamp = ros::Time::now();
+      odom_des.header.stamp = getMonotonicTime();//ros::Time::now();
       traj.UpdateGoal(traj_goal);
       mav->setPositionCommand(traj_goal);
 
@@ -280,7 +309,7 @@ static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
   {
     // Updates traj goal to allow for correct initalization of the trajectory
     traj.set_start_time();
-          odom_des.header.stamp = ros::Time::now();
+          odom_des.header.stamp = getMonotonicTime();//ros::Time::now();
 
     traj.UpdateGoal(traj_goal);
     // If we are ready to start the trajectory

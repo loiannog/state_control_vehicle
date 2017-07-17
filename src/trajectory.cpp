@@ -15,7 +15,7 @@ void Trajectory::setOffsets(double x, double y, double z, double yaw) {
 
 void Trajectory::UpdateGoal(quadrotor_msgs::PositionCommand &goal)
 {
-  ros::Duration delta_time = ros::Time::now() - start_time_;
+  ros::Duration delta_time = getMonotonicTime() - start_time_;//ros::Time::now() - start_time_;
   double traj_time = delta_time.toSec();
 
   unsigned long i = traj_time * 2000;

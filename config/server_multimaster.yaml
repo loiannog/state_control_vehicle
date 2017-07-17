@@ -1,4 +1,4 @@
-sync_topics: ['/nanokontrol2','/vicon/TransportationBar/odom', /QuadrotorQc18/quadrotor_ukf/control_odom]
+sync_topics: ['/nanokontrol2','/vicon/TransportationBar/odom', /QuadrotorQc18/quadrotor_ukf/control_odom, /QuadrotorQc18/wm, /QuadrotorQc18/so3_cmd, /QuadrotorQc18/position_cmd, /QuadrotorQc18/des_odom]
 ignore_nodes: ['/rviz']
 ignore_services: ['/*']
 

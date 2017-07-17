@@ -205,17 +205,17 @@ static void nanokontrol_cb(const sensor_msgs::Joy::ConstPtr &msg)
 
         if (mav->goTo(x, y, z, yaw)){
           state_ = PREP_TRAJ;
-      des_odom.header.stamp = getMonotonicTime();//ros::Time::now();
-      des_odom.pose.pose.position.x = x;
-      des_odom.pose.pose.position.y = y;
-      des_odom.pose.pose.position.z = z;
-      des_odom.pose.pose.orientation.w = yaw;//save just the yaw in the scalar part of the quaternion
-      des_odom.pose.pose.orientation.x = 0;
-      des_odom.pose.pose.orientation.y = 0;
-      des_odom.pose.pose.orientation.z = 0;
-      des_odom.twist.twist.linear.x = 0;
-      des_odom.twist.twist.linear.y = 0;
-      des_odom.twist.twist.linear.z = 0;
+      odom_des.header.stamp = getMonotonicTime();//ros::Time::now();
+      odom_des.pose.pose.position.x = x;
+      odom_des.pose.pose.position.y = y;
+      odom_des.pose.pose.position.z = z;
+      odom_des.pose.pose.orientation.w = yaw;//save just the yaw in the scalar part of the quaternion
+      odom_des.pose.pose.orientation.x = 0;
+      odom_des.pose.pose.orientation.y = 0;
+      odom_des.pose.pose.orientation.z = 0;
+      odom_des.twist.twist.linear.x = 0;
+      odom_des.twist.twist.linear.y = 0;
+      odom_des.twist.twist.linear.z = 0;
         }
       }      
     }

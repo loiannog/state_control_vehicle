@@ -4,7 +4,7 @@
   <arg name="vicon" value="0"/>
   <arg name="vicon_fps" value="100"/>
   <arg name="mass" default="0.250"/>
-  <arg name="odotopic" value="/QuadrotorQc11/quadrotor_ukf/control_odom"/>
+  <arg name="odotopic" value="/$(arg model)/quadrotor_ukf/control_odom"/>
 
   <group ns="$(arg model)">
 

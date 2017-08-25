@@ -5,4 +5,4 @@ distribution:
   pospsi: {psi1: 0.0, psi2: 0.0, psi3: 0.0, psi4: 0.0}
 num_vehicles: 2
 secondaty_task: true
-
+optimize: true

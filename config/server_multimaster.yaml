@@ -1,4 +1,4 @@
-sync_topics: ['/nanokontrol2','/vicon/TransportationBar/odom', /QuadrotorQc18/quadrotor_ukf/control_odom, /QuadrotorQc18/wm, /QuadrotorQc18/so3_cmd, /QuadrotorQc18/position_cmd, /QuadrotorQc18/des_odom, /QuadrotorQc19/quadrotor_ukf/control_odom, /QuadrotorQc19/wm, /QuadrotorQc19/so3_cmd, /QuadrotorQc19/position_cmd, /QuadrotorQc19/des_odom]
+sync_topics: ['/nanokontrol2','/vicon/TransportationBar/odom', /QuadrotorQc18/quadrotor_ukf/control_odom, /QuadrotorQc18/transportation_opt_nodelet/vio_pose_graph, /QuadrotorQc18/vio_pose, /QuadrotorQc18/wm, /QuadrotorQc18/so3_cmd, /QuadrotorQc18/position_cmd, /QuadrotorQc18/des_odom, /QuadrotorQc19/wm, /QuadrotorQc19/so3_cmd, /QuadrotorQc19/position_cmd, /QuadrotorQc19/des_odom, /QuadrotorQc19/vio_pose]
 ignore_nodes: ['/rviz']
 ignore_services: ['/*']
 

@@ -3,7 +3,7 @@
   <arg name="sim" value="0"/>
   <arg name="vicon" value="0"/>
   <arg name="vicon_fps" value="100"/>
-  <arg name="mass" default="0.635"/>
+  <arg name="mass" default="0.625"/>
 
 <!--<arg name="odotopic_bar_vicon" value="/vicon/TransportationBar/odom"/>-->
 <arg name="odotopic_bar_vicon" value="/QuadrotorQc18/quadrotor_ukf/control_odom"/>
@@ -14,11 +14,11 @@
 
     <param name="mass" value="$(arg mass)"/>
 
-    <node pkg="master_discovery_fkie" type="master_discovery" name="master_discovery">
+   <node pkg="master_discovery_fkie" type="master_discovery" name="master_discovery">
       <param name="mcast_group" value="224.0.0.1" />
     </node>
   
-    <node pkg="master_sync_fkie" type="master_sync" name="multimaster_client_sync">
+   <node pkg="master_sync_fkie" type="master_sync" name="multimaster_client_sync">
       <rosparam file="$(find state_control_vehicle)/config/server_multimaster.yaml" />
     </node>
 
@@ -91,6 +91,16 @@
       <remap from="~odom" to="$(arg odotopic)"/>
       <remap from="~wm" to="wm"/>
     </node>
+
+    <node pkg="nodelet"
+      type="nodelet"
+      args="load transportation_opt/TransportationOptNodelet standalone_nodelet"
+      name="transportation_opt_nodelet"
+      required="true"
+      output="screen">
+      <remap from="~odom_left" to="/QuadrotorQc18/vio_pose"/>
+      <remap from="~odom_right" to="/QuadrotorQc19/vio_pose"/>
+    </node>
     
      <node pkg="vio_qc"
       type="MVSampleVISLAMEagle"
@@ -98,6 +108,9 @@
       output="screen" args = "-a">
       <remap from="~vio_pose" to="vio_pose"/>
       <remap from="~imu" to="imu"/>
+      <remap from="~odom_secondary" to="/QuadrotorQc19/vio_pose"/>
+      <rosparam file="$(find state_control_vehicle)/config/QuadrotorQ2_gains2bar.yaml"/>
+      <rosparam file="$(find state_control_vehicle)/config/structure_params.yaml"/>
       </node>
       
      <node pkg="quadrotor_ukf"

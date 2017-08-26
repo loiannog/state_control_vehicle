@@ -18,6 +18,17 @@ ros::Time getMonotonicTime()
       return time_monoros;
   }
 
+ros::Time getRealTimeRos()
+  {
+      struct timespec t;
+      clock_gettime( CLOCK_REALTIME, &t );
+      uint64_t timeNanoSecRealtime= t.tv_sec * 1000000000ULL + t.tv_nsec;
+      //return (int64_t)timeNanoSecMonotonic;
+      ros::Time time_realros;
+      time_realros.fromSec((double)(timeNanoSecRealtime/1000000000.0));
+      return time_realros;
+  }
+
 Trajectory::Trajectory() : completed(false), loaded(false), xoff(0), yoff(0), zoff(0), yaw_off(0) {}
 
 void Trajectory::setOffsets(double x, double y, double z, double yaw) {
@@ -26,7 +37,7 @@ void Trajectory::setOffsets(double x, double y, double z, double yaw) {
 
 void Trajectory::UpdateGoal(quadrotor_msgs::PositionCommand &goal)
 {
-  ros::Duration delta_time = getMonotonicTime() - start_time_;//ros::Time::now() - start_time_;
+  ros::Duration delta_time = getRealTimeRos() - start_time_;//ros::Time::now() - start_time_;
   double traj_time = delta_time.toSec();
 
   unsigned long i = traj_time * 2000;

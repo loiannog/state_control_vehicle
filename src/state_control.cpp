@@ -205,7 +205,7 @@ static void nanokontrol_cb(const sensor_msgs::Joy::ConstPtr &msg)
 
         if (mav->goTo(x, y, z, yaw)){
           state_ = PREP_TRAJ;
-      odom_des.header.stamp = getMonotonicTime();//ros::Time::now();
+      odom_des.header.stamp = getRealTimeRos();//ros::Time::now();
       odom_des.pose.pose.position.x = x;
       odom_des.pose.pose.position.y = y;
       odom_des.pose.pose.position.z = z;
@@ -224,7 +224,7 @@ static void nanokontrol_cb(const sensor_msgs::Joy::ConstPtr &msg)
 
 static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
 {
-      curr_odom.header.stamp = getMonotonicTime();//ros::Time::now();
+      curr_odom.header.stamp = getRealTimeRos();//ros::Time::now();
       curr_odom.pose.pose.position.x = msg->pose.pose.position.x;
       curr_odom.pose.pose.position.y = msg->pose.pose.position.y;
       curr_odom.pose.pose.position.z = msg->pose.pose.position.z;
@@ -282,7 +282,7 @@ static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
     }
     else
     {
-      odom_des.header.stamp = getMonotonicTime();//ros::Time::now();
+      odom_des.header.stamp = getRealTimeRos();//ros::Time::now();
       traj.UpdateGoal(traj_goal);
       mav->setPositionCommand(traj_goal);
 
@@ -309,7 +309,7 @@ static void odom_cb(const nav_msgs::Odometry::ConstPtr &msg)
   {
     // Updates traj goal to allow for correct initalization of the trajectory
     traj.set_start_time();
-          odom_des.header.stamp = getMonotonicTime();//ros::Time::now();
+          odom_des.header.stamp = getRealTimeRos();//ros::Time::now();
 
     traj.UpdateGoal(traj_goal);
     // If we are ready to start the trajectory

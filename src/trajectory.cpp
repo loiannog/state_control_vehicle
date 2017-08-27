@@ -37,6 +37,8 @@ void Trajectory::setOffsets(double x, double y, double z, double yaw) {
 
 void Trajectory::UpdateGoal(quadrotor_msgs::PositionCommand &goal)
 {
+  //add trajectory time
+  goal.header.stamp = getRealTimeRos();
   ros::Duration delta_time = getRealTimeRos() - start_time_;//ros::Time::now() - start_time_;
   double traj_time = delta_time.toSec();
 
